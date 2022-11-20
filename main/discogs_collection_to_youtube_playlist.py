@@ -61,7 +61,7 @@ def main():
         json.dump(releases, fp)
 
     print("Getting release IDs for collection")
-    release_ids = [release["id"] for release in releases]
+    release_ids = [release["id"] for release in (releases[0], releases[1])]
 
 
     full_collection_details = []
