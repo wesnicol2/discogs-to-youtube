@@ -77,6 +77,7 @@ def main():
             release_json = requests.get(release_url).json()
             release_videos = release_json["videos"]
             release_urls = [video["uri"] for video in release_videos]
+            release_urls = [release_urls[0]]
             video_urls += release_urls
         except KeyError:
             None
