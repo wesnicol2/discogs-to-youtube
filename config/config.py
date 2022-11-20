@@ -18,11 +18,7 @@ config = {
 
     "youtube": {
         # playlist ID can be found in your playlist URL
-        "playlist_id": youtube_playlist_id,
-        "scopes": [
-            "https://www.googleapis.com/auth/youtube.readonly",
-            "https://www.googleapis.com/auth/youtube"
-        ]
+        "playlist_id": youtube_playlist_id
 
     }
     
