@@ -6,7 +6,7 @@ from config_secrets import *
 config = {
     "discogs": {
         # get your Discogs API token from https://www.discogs.com/settings/developers
-        "username": "wesnicol",
+        "username": discogs_username,
         "token": discogs_token
     },
 
@@ -19,7 +19,6 @@ config = {
     "youtube": {
         # playlist ID can be found in your playlist URL
         "playlist_id": youtube_playlist_id
-
     }
     
 }
