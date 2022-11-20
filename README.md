@@ -5,3 +5,7 @@ Packages needed:
     - more_itertools
     - oauth2client
     - 
+
+
+Adapted from GitHub gist authored by volpefoxx
+https://gist.github.com/volpefoxx/1d8a6832e588f3ffa6c9c680f9dada38
