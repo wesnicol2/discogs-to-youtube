@@ -1,5 +1,6 @@
 import requests
 import time
+import discogs_client
 
 import sys
 sys.path.append("../config")
@@ -16,6 +17,9 @@ items_per_page = config['discogs']['items_per_page']
 app_name = config['discogs']['app_name']
 playlist_id = config['youtube']['playlist_id']
 
+
+def get_releases():
+    print(dir(discogs.release(20017387)))
 
 def get_user_collection_releases():
     print(f"Getting release IDs for user [{username}] collection")
@@ -50,3 +54,11 @@ def get_youtube_urls(releases):
         except KeyError:
             None
         time.sleep(delay_between_requests)
+
+def setup():
+    global discogs
+    discogs = discogs_client.Client(f"{username}_user_agent/1.0", user_token=token)
+
+
+
+setup()

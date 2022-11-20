@@ -4,7 +4,7 @@ Packages needed:
     - requests
     - more_itertools
     - oauth2client
-    - 
+    - discogs_client
 
 
 Adapted from GitHub gist authored by volpefoxx
