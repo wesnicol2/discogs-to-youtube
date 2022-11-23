@@ -34,6 +34,7 @@ def get_releases(seller_username):
         response = requests.get(path)
         if response.status_code != 200:
             break
+        time.sleep(delay_between_requests) # Discogs only allows 60 requests per minute
 
         response = response.json()
         listings = response['listings']
@@ -41,7 +42,7 @@ def get_releases(seller_username):
             # Could filters be added here in the future?
             release = listing['release']
             release_ids.add(release['id'])
-            print(u"Title: {0}".format(release['title'])) # TODO: Remove
+            print(f"Retrieved title: [{release['title']}]")
 
         path = response['pagination']['urls']['next']
 
@@ -50,7 +51,7 @@ def get_releases(seller_username):
 
 def get_user_collection_releases():
     print(f"Getting release IDs for user [{username}] collection")
-    headers = {"User-Agent": "{app_name}/1.0".format(app_name=app_name)}
+    headers = {"User-Agent": config['discogs']['user_agent']}
     collection_path = "/users/{username}/collection/folders/0/releases".format(username=username)
     collection_url = "{base_path}{collection_path}?token={token}&per_page={per_page}".format(
         base_path=base_path,
@@ -62,21 +63,24 @@ def get_user_collection_releases():
     return releases
 
 
-def get_youtube_urls(release_ids):
+def get_youtube_urls(release, max_videos=1):
     video_urls = set([])
-    for release_id in release_ids:
-        print("Getting video(s) for {id}".format(id=release_id))
-        release_url = "{base_path}/releases/{id}?token={token}".format(
-            base_path=base_path,
-            id=release_id,
-            token=token)
-        release_json = requests.get(release_url).json()
-        release_videos = release_json["videos"]
-        # release_urls = [video["uri"] for video in release_videos]
-        # video_urls += release_urls
-        video_urls.add(release_videos[0]["uri"])
-        time.sleep(delay_between_requests)
+    release_videos = release.videos
+    # release_urls = [video["uri"] for video in release_videos]
+    # video_urls += release_urls
+
+    video_urls = set([release_video.data["uri"] for release_video in release_videos[:max_videos]])
     return video_urls
+
+
+def filter_releases(releases, genre):
+    filtered_releases = set([])
+    for release in releases:
+        if genre in release.genres:
+            print(f"[{release.title}] matches given genre [{genre}]")
+            filtered_releases.add(release)    
+    return filtered_releases# [release for release in releases if genre in release.genres]
+
 
 
 def authenticate():
