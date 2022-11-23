@@ -23,6 +23,16 @@ playlist_id = config['youtube']['playlist_id']
 # Common objects
 session = requests.Session()
 
+def get_scarcity_quotient(release):
+    want_count = release.community.want
+    have_count = release.community.have
+    scarcity = want_count - have_count
+    scarcity_quotient = scarcity / (want_count + have_count)
+
+    # print(f"{release.title} scarcity: [{scarcity}]") # TODO: Remove
+    # print(f"{release.title} scarcity quotient: {scarcity_quotient}") # TODO: Remove
+
+    return scarcity_quotient 
 
 def get_releases(seller_username):
     path = f"{base_path}/users/{seller_username}/inventory?per_page={max_per_page}"
@@ -74,11 +84,12 @@ def get_youtube_urls(release, max_videos=1):
 
 
 def filter_releases(releases, genre):
-    filtered_releases = set([])
+    filtered_releases = []
     for release in releases:
+        print(f"Checking {release.title} genre") # TODO: Remove
         if genre in release.genres:
-            print(f"[{release.title}] matches given genre [{genre}]")
-            filtered_releases.add(release)    
+            print("MATCH!!")
+            filtered_releases.append(release) 
     return filtered_releases# [release for release in releases if genre in release.genres]
 
 
