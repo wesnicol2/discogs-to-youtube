@@ -1,4 +1,3 @@
-
 import sys
 sys.path.append("../discogs-to-youtube/config/secrets")
 from config_secrets import *
@@ -48,4 +47,3 @@ config['discogs']['user_agent'] = f"{config['discogs']['app_name']}_discogs_api_
 
 
 
-    

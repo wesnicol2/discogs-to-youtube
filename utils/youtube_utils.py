@@ -58,7 +58,6 @@ def add_video_to_playlist(video_id, playlist_id, write=False):
 
     print(f"Making POST request to add video ID {video_id} to playlist ID: {playlist_id}")
     
-
     # FOR DEBUGGING
     # print(f"URL: {path}")
     # print(f"data: ")
@@ -72,7 +71,6 @@ def add_video_to_playlist(video_id, playlist_id, write=False):
         print(f"Response Code: {response.response_code}")
     else:
         print(f"Request not sent - write = [{write}]")
-        
 
 
 # # # # # # # # Setup # # # # # # # # # # #

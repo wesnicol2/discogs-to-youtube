@@ -12,6 +12,7 @@ base_path = "https://api.discogs.com"
 delay_between_requests = 1
 max_per_page = 100 # Discogs API only allows 100 results per page
 
+
 # Configuration Variables
 username = config['discogs']['username']
 token = config['discogs']['token']
@@ -109,7 +110,3 @@ def setup():
 
 
 setup()
-
-
-
-
