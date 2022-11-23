@@ -1,9 +1,9 @@
 from more_itertools import unique_everseen
 
 import sys
-sys.path.append("../config")
+sys.path.append("../discogs-to-youtube/config")
 from config import *
-sys.path.append("../utils")
+sys.path.append("../discogs-to-youtube/utils")
 import discogs_utils
 import youtube_utils
 

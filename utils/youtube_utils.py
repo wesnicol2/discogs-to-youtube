@@ -7,7 +7,7 @@ from oauth2client.file import Storage
 from oauth2client.tools import run_flow
 
 import sys
-sys.path.append("../config")
+sys.path.append("../discogs-to-youtube/config")
 from config import *
 
 # Global Youtube API variables
@@ -56,11 +56,16 @@ def add_video_to_playlist(video_id, playlist_id):
         }
 
     print(f"Making POST request to add video ID {video_id} to playlist ID: {playlist_id}")
-    response = requests.post(
-        path,
-        data=json.dumps(payload),
-        headers={'Content-Type': 'application/json'})
-    print(f"Response Code: {response.response_code}")
+    print("The request is currently commented out. Here is what the request would have been:")
+    print(f"URL: {path}")
+    print(f"data: ")
+    print(json.dumps(payload))
+
+    # response = requests.post(
+    #     path,
+    #     data=json.dumps(payload),
+    #     headers={'Content-Type': 'application/json'})
+    # print(f"Response Code: {response.response_code}")
 
 
 # # # # # # # # Setup # # # # # # # # # # #
