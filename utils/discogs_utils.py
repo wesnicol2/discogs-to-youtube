@@ -35,11 +35,12 @@ def get_releases(seller_username):
             break
 
         response = response.json()
-        releases = response['listings']
-        for release in releases:
+        listings = response['listings']
+        for listing in listings:
             # Could filters be added here in the future?
+            release = listing['release']
             release_ids.add(release['id'])
-            print(u"Title: {0}".format(release['release']['title'])) # TODO: Remove
+            print(u"Title: {0}".format(release['title'])) # TODO: Remove
 
         path = response['pagination']['urls']['next']
 
@@ -61,23 +62,20 @@ def get_user_collection_releases():
 
 
 def get_youtube_urls(release_ids):
-    video_urls = []
-
+    video_urls = set([])
     for release_id in release_ids:
-        print("Getting videos for {id}".format(id=release_id))
+        print("Getting video(s) for {id}".format(id=release_id))
         release_url = "{base_path}/releases/{id}?token={token}".format(
             base_path=base_path,
             id=release_id,
             token=token)
-        try:
-            release_json = requests.get(release_url).json()
-            release_videos = release_json["videos"]
-            release_urls = [video["uri"] for video in release_videos]
-            release_urls = [release_urls[0]]
-            video_urls += release_urls
-        except KeyError:
-            None
+        release_json = requests.get(release_url).json()
+        release_videos = release_json["videos"]
+        # release_urls = [video["uri"] for video in release_videos]
+        # video_urls += release_urls
+        video_urls.add(release_videos[0]["uri"])
         time.sleep(delay_between_requests)
+    return video_urls
 
 
 def authenticate():
@@ -97,7 +95,7 @@ def authenticate():
     # fetch the identity object for the current logged in user.
     user = discogs.identity()
 
-    print
+    print("Discogs authentication compmlete.")
     print(' == User ==')
     print(f'    * username           = {user.username}')
     print(f'    * name               = {user.name}')
