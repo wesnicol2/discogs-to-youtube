@@ -4,7 +4,8 @@ Packages needed:
     - requests
     - more_itertools
     - oauth2client
-    - 
+    - discogs_client
+    - beautifulsoup4
 
 
 Adapted from GitHub gist authored by volpefoxx

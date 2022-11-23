@@ -1,13 +1,14 @@
 import re
 import requests
 import httplib2
+import json
 
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 from oauth2client.tools import run_flow
 
 import sys
-sys.path.append("../config")
+sys.path.append("../discogs-to-youtube/config")
 from config import *
 
 # Global Youtube API variables
@@ -43,7 +44,7 @@ def get_id_from_url(url):
     return video_id
 
 
-def add_video_to_playlist(video_id, playlist_id):
+def add_video_to_playlist(video_id, playlist_id, write=False):
     path = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&access_token={access_token}".format(access_token=access_token)
     payload = { 
             "snippet": {
@@ -56,11 +57,20 @@ def add_video_to_playlist(video_id, playlist_id):
         }
 
     print(f"Making POST request to add video ID {video_id} to playlist ID: {playlist_id}")
-    response = requests.post(
+    
+    # FOR DEBUGGING
+    # print(f"URL: {path}")
+    # print(f"data: ")
+    # print(json.dumps(payload))
+
+    if write: 
+        response = requests.post(
         path,
         data=json.dumps(payload),
         headers={'Content-Type': 'application/json'})
-    print(f"Response Code: {response.response_code}")
+        print(f"Response Code: {response.response_code}")
+    else:
+        print(f"Request not sent - write = [{write}]")
 
 
 # # # # # # # # Setup # # # # # # # # # # #
