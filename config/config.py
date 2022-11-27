@@ -2,10 +2,13 @@ import sys
 sys.path.append("../discogs-to-youtube/config/secrets")
 from config_secrets import *
 
-CONFIG_DIR = "../discogs-to-youtube/config"
+BASE_DIR = "../discogs-to-youtube"
+CONFIG_DIR = f"{BASE_DIR}/config"
 SECRETS_DIR = f"{CONFIG_DIR}/secrets"
 GOOGLE_SECRETS_CONFIG_FILEPATH = f"{SECRETS_DIR}/google-secrets.json" # Required
 STORED_CREDENTIALS_FILEPATH = f"{SECRETS_DIR}/google-stored-credentials.json" # Will be created if it does not exist
+RESOURCES_DIR = f"{BASE_DIR}/resources"
+VIDEO_IDS_FILEPATH = f"{RESOURCES_DIR}/video_ids.csv"
 
 config = {
     "discogs": {
