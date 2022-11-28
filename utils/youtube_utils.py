@@ -68,7 +68,7 @@ def add_video_to_playlist(video_id, playlist_id, write=False):
         path,
         data=json.dumps(payload),
         headers={'Content-Type': 'application/json'})
-        print(f"Response Code: {response.response_code}")
+        print(f"Response Code: {response.status_code}")
     else:
         print(f"Request not sent - write = [{write}]")
 
