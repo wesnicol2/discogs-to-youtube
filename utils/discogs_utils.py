@@ -83,16 +83,13 @@ def get_youtube_urls(release, max_videos=1):
     return video_urls
 
 
-def filter_releases(releases, genre):
-    filtered_releases = []
-    for release in releases:
-        print(f"Checking {release.title} genre") # TODO: Remove
-        if genre in release.genres:
-            print("MATCH!!")
-            filtered_releases.append(release) 
-    return filtered_releases# [release for release in releases if genre in release.genres]
-
-
+def genre_matches(release, genre):
+    print(f"Checking {release.title} genre") # TODO: Remove
+    if genre in release.genres:
+        print("MATCH!!")
+        return True
+    else:
+        return False
 
 def authenticate():
     # A user-agent is required with Discogs API requests. Be sure to make your
