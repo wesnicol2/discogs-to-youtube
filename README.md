@@ -1,11 +1,10 @@
 This is a python utility which can update Youtube Playlists from Discogs information.
 
-Packages needed: 
+Packages needed: (TODO: Update this by starting a new venv and seeing what is needed) 
     - requests
     - more_itertools
     - oauth2client
     - discogs_client
-    - beautifulsoup4
     - csv
 
 
