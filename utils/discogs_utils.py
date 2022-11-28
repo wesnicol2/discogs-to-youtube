@@ -1,7 +1,6 @@
 import requests
 import time
 import discogs_client
-import json
 
 import sys
 sys.path.append("../discogs-to-youtube/config")
@@ -20,18 +19,12 @@ items_per_page = config['discogs']['items_per_page']
 app_name = config['discogs']['app_name']
 playlist_id = config['youtube']['playlist_id']
 
-# Common objects
-session = requests.Session()
 
 def get_scarcity_quotient(release):
     want_count = release.community.want
     have_count = release.community.have
     scarcity = want_count - have_count
     scarcity_quotient = scarcity / (want_count + have_count)
-
-    # print(f"{release.title} scarcity: [{scarcity}]") # TODO: Remove
-    # print(f"{release.title} scarcity quotient: {scarcity_quotient}") # TODO: Remove
-
     return scarcity_quotient 
 
 def get_releases(seller_username):
@@ -43,6 +36,7 @@ def get_releases(seller_username):
     while True:
         response = requests.get(path)
         if response.status_code != 200:
+            print(f"Response['reason']: [{response.reason}]")
             break
         time.sleep(delay_between_requests) # Discogs only allows 60 requests per minute
 
@@ -83,16 +77,13 @@ def get_youtube_urls(release, max_videos=1):
     return video_urls
 
 
-def filter_releases(releases, genre):
-    filtered_releases = []
-    for release in releases:
-        print(f"Checking {release.title} genre") # TODO: Remove
-        if genre in release.genres:
-            print("MATCH!!")
-            filtered_releases.append(release) 
-    return filtered_releases# [release for release in releases if genre in release.genres]
-
-
+def genre_matches(release, genre):
+    print(f"Checking {release.title} genre") # TODO: Remove
+    if genre.strip() in release.genres:
+        print("MATCH!!")
+        return True
+    else:
+        return False
 
 def authenticate():
     # A user-agent is required with Discogs API requests. Be sure to make your
@@ -116,9 +107,6 @@ def authenticate():
     print(f'    * username           = {user.username}')
     print(f'    * name               = {user.name}')
     
-
-    
-
 
 def setup():
     authenticate()

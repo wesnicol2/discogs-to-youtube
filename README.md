@@ -6,6 +6,7 @@ Packages needed:
     - oauth2client
     - discogs_client
     - beautifulsoup4
+    - csv
 
 
 Adapted from GitHub gist authored by volpefoxx
