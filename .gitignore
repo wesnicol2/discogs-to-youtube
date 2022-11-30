@@ -3,3 +3,4 @@ secrets/
 */*.json
 __pycache__/
 */*.csv
+video_ids_bkp.csv
