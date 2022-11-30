@@ -29,18 +29,20 @@ config = {
         "oauth_token": discogs_oauth_token,
         "oauth_token_secret": discogs_oauth_token_secret,
 
-
-        # must be larger than your discogs collection
-        "items_per_page": 1000,
-
         # choose a unique app name for the user agent
-        "app_name": "wes_test_app"
-        "user_agent" "test_app_discogs_api_example/2.0"
+        "app_name": "wes_test_app",
+        "user_agent": "test_app_discogs_api_example/2.0",
+
+        # Discogs API only allows 100 results per page
+        "max_results_per_page": 100
     },
 
     "youtube": {
         # playlist ID can be found in your playlist URL
-        "playlist_id": youtube_playlist_id
+        "playlist_id": youtube_playlist_id,
+
+        # Max daily API calls (Quota) is 200 per day at the time of writing this
+        "max_daily_api_calls": 200
     }
     
 }

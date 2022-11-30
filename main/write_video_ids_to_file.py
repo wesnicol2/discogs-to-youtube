@@ -9,12 +9,12 @@ import youtube_utils
 
 
 def main():
-    test_release_ids = [549650,5311199,5311199,1502385,3099029]
     print("Starting process...")
-    release_ids = discogs_utils.get_releases("DJFleaMarket")
+    test_release_ids = [549650,5311199,5311199,1502385,3099029]
+    release_ids = test_release_ids #discogs_utils.get_releases("DJFleaMarket")
     i = 0 # TODO: Remove
     execution_times = [] # TODO: Remove
-    with open(VIDEO_IDS_FILEPATH, 'w') as file:
+    with open(VIDEO_IDS_FILEPATH, 'w', newline='') as file:
         writer = csv.writer(file)
         for release_id in release_ids:
             print(f"i = {i}")

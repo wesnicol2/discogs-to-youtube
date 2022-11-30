@@ -9,15 +9,7 @@ from config import *
 # Global Discog variables
 base_path = "https://api.discogs.com"
 delay_between_requests = 1
-max_per_page = 100 # Discogs API only allows 100 results per page
-
-
-# Configuration Variables
-username = config['discogs']['username']
-token = config['discogs']['token']
-items_per_page = config['discogs']['items_per_page']
-app_name = config['discogs']['app_name']
-playlist_id = config['youtube']['playlist_id']
+max_per_page = config['discogs']['max_results_per_page']
 
 
 def get_scarcity_quotient(release):
@@ -52,20 +44,6 @@ def get_releases(seller_username):
 
     return release_ids
     
-
-def get_user_collection_releases():
-    print(f"Getting release IDs for user [{username}] collection")
-    headers = {"User-Agent": config['discogs']['user_agent']}
-    collection_path = "/users/{username}/collection/folders/0/releases".format(username=username)
-    collection_url = "{base_path}{collection_path}?token={token}&per_page={per_page}".format(
-        base_path=base_path,
-        collection_path=collection_path,
-        token=token,
-        per_page=items_per_page)
-    print(f"Getting releases from collection url: {collection_url}")
-    releases = requests.get(collection_url).json()["releases"]
-    return releases
-
 
 def get_youtube_urls(release, max_videos=1):
     video_urls = set([])

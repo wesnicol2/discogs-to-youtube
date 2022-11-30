@@ -17,6 +17,8 @@ scopes = [
     "https://www.googleapis.com/auth/youtube.readonly", 
     "https://www.googleapis.com/auth/youtube"
     ]
+max_daily_api_calls = config['youtube']['max_daily_api_calls']
+
 
 # Configuration Variables
 playlist_id = config['youtube']['playlist_id']
@@ -63,15 +65,26 @@ def add_video_to_playlist(video_id, playlist_id, write=False):
     # print(f"data: ")
     # print(json.dumps(payload))
 
-    if write: 
-        response = requests.post(
-        path,
-        data=json.dumps(payload),
-        headers={'Content-Type': 'application/json'})
-        print(f"Response Code: {response.status_code}")
+    if not video_exists_in_playlist(video_id=video_id, playlist_id=playlist_id):
+        if write and add_video_to_playlist.number_of_calls < max_daily_api_calls:
+            add_video_to_playlist.number_of_calls += 1 # Keep track of number of calls to google
+            response = requests.post(
+            path,
+            data=json.dumps(payload),
+            headers={'Content-Type': 'application/json'})
+            print(f"Response Code: {response.status_code}")
+        else:
+            print(f"Request not sent")
+            print(f"Write = [{write}]")
+            print(f"Calls made to Youtube API = [{add_video_to_playlist.number_of_calls}] / [{max_daily_api_calls}]")
     else:
-        print(f"Request not sent - write = [{write}]")
+        print(f"Video ID [{video_id}] already exists in playlist [{playlist_id}]. No request made")
 
+
+
+def video_exists_in_playlist(video_id, playlist_id):
+    print("video_exists_in_playlist has not yet been implemented. Returning True")
+    return True
 
 # # # # # # # # Setup # # # # # # # # # # #
 
@@ -97,3 +110,4 @@ def authorize_credentials(secrets_filepath, scopes):
 credentials = authorize_credentials(secrets_filepath=GOOGLE_SECRETS_CONFIG_FILEPATH, scopes=scopes)
 credentials.refresh(httplib2.Http())
 access_token = credentials.get_access_token()[0]
+add_video_to_playlist.number_of_calls = 0  # Start API request counter at 0 
