@@ -65,10 +65,10 @@ def add_video_to_playlist(video_id, playlist_id, write=False):
     # print(f"data: ")
     # print(json.dumps(payload))
 
-    if not video_exists_in_playlist(video_id=video_id, playlist_id=playlist_id):
+    if not video_id in get_video_ids_in_playlist(playlist_id):
         if write and add_video_to_playlist.number_of_calls < max_daily_api_calls:
             add_video_to_playlist.number_of_calls += 1 # Keep track of number of calls to google
-            response = requests.post(
+            response = requests.post( # Quota cost = 50? Think about replacing number_of_calls with quota system
             path,
             data=json.dumps(payload),
             headers={'Content-Type': 'application/json'})
@@ -78,13 +78,43 @@ def add_video_to_playlist(video_id, playlist_id, write=False):
             print(f"Write = [{write}]")
             print(f"Calls made to Youtube API = [{add_video_to_playlist.number_of_calls}] / [{max_daily_api_calls}]")
     else:
-        print(f"Video ID [{video_id}] already exists in playlist [{playlist_id}]. No request made")
+        print("Request not sent")
+        print(f"Video ID [{video_id}] already exists in playlist [{playlist_id}].")
+        
 
 
-
-def video_exists_in_playlist(video_id, playlist_id):
-    print("video_exists_in_playlist has not yet been implemented. Returning True")
-    return True
+def get_video_ids_in_playlist(playlist_id):
+    print(f"Getting videos ids in playlist: [{playlist_id}]")
+    path = f"https://www.googleapis.com/youtube/v3/playlistItems?playlistId={playlist_id}&part=snippet&access_token={access_token}"
+    response = requests.get(path) # Quota cost = 1? Think about replacing number_of_calls with quota system
+    # TODO: Update to allow for pagination
+    video_ids = []
+    while True:
+        status_code = response.status_code
+        print(f"Response code: [{status_code}]")
+        response = response.json()
+        try:
+            if status_code == 200: # TODO: Extract request handling into a separate file
+                video_ids.extend([video['snippet']['resourceId']['videoId'] for video in response['items']])
+                next_page_token = response['nextPageToken']
+                response = requests.get(f"{path}&pageToken={next_page_token}")
+            elif status_code == 400:
+                break
+                # TODO: Implement handling for 400 response code
+            elif status_code == 401:
+                break
+                # TODO: Implement handling for 400 response code
+            elif status_code == 403:
+                if "exceded" in response['error']['message']:
+                    print("Youtube API quota has been exceded.")    
+                break
+            elif status_code == 404:
+                print(f"Playlist ID [{playlist_id}] was not found. (Also, double check that that truly was the cause of the 404. There's a small possiblity it could have been caused by a pagination request")
+                break
+        except KeyError:
+            break # KeyError will occur when there is no next page token, indicating the end of pagiation
+             
+    return video_ids
 
 # # # # # # # # Setup # # # # # # # # # # #
 
